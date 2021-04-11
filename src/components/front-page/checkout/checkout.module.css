@@ -1,0 +1,17 @@
+.receipt {
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 1px solid lightgray;
+    padding: 1%;
+    margin: 0 auto;
+}
+
+.row {
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

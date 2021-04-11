@@ -1,0 +1,26 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.catalog {
+    flex: 1;
+    padding: 1% 10%;
+}
+
+.detailCard {
+    width: 400px;
+    margin: 5px;
+    display: inline-block;
+}
+
+.submit_button {
+    width: 40%;
+    height: 40px;
+    margin-left: auto;
+    border: none;
+    background-color: green;
+    color: white;
+}
