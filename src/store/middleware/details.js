@@ -11,12 +11,12 @@ export const detailsMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_DETAILS_ACTION:
-                fetch("http://localhost:8080/details")
+                fetch("http://localhost:8080/detail")
                     .then(response => response.json())
                     .then(jsonData => store.dispatch(setDetails(jsonData)));
                 break;
             case ADD_DETAIL_ACTION:
-                fetch("http://localhost:8080/details/", {
+                fetch("http://localhost:8080/detail/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -38,7 +38,7 @@ export const detailsMiddleware = () => {
                 })
                 break;
             case CHANGE_DETAIL_ACTION:
-                fetch("http://localhost:8080/details/" + action.payload.id, {
+                fetch("http://localhost:8080/detail/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -61,7 +61,7 @@ export const detailsMiddleware = () => {
                 )
                 break;
             case DELETE_DETAIL_ACTION:
-                fetch("http://localhost:8080/details/" + action.payload, {
+                fetch("http://localhost:8080/detail/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

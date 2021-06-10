@@ -1,22 +1,22 @@
 import {auth} from "../../utils/utils";
 import {
-    GET_DEALERS_ACTION,
-    ADD_DEALER_ACTION,
-    DELETE_DEALER_ACTION,
-    CHANGE_DEALER_ACTION,
-    setDealers
-} from "../actions/dealers";
+    GET_SUPPLIES_ACTION,
+    ADD_SUPPLY_ACTION,
+    DELETE_SUPPLY_ACTION,
+    CHANGE_SUPPLY_ACTION,
+    setSupplies
+} from "../actions/supplies";
 
-export const dealersMiddleware = () => {
+export const suppliesMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
-            case GET_DEALERS_ACTION:
-                fetch("http://localhost:8080/dealers")
+            case GET_SUPPLIES_ACTION:
+                fetch("http://localhost:8080/supplies")
                     .then(response => response.json())
-                    .then(jsonData => store.dispatch(setDealers(jsonData)));
+                    .then(jsonData => store.dispatch(setSupplies(jsonData)));
                 break;
-            case ADD_DEALER_ACTION:
-                fetch("http://localhost:8080/dealers/", {
+            case ADD_SUPPLY_ACTION:
+                fetch("http://localhost:8080/supplies/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -32,13 +32,13 @@ export const dealersMiddleware = () => {
                         }
                     }
                 ).then(jsonData => {
-                    let dealers = store.getState().dealers.dealers.slice();
-                    dealers.push(jsonData);
-                    store.dispatch(setDealers(dealers));
+                    let supplies = store.getState().supplies.supplies.slice();
+                    supplies.push(jsonData);
+                    store.dispatch(setSupplies(supplies));
                 })
                 break;
-            case CHANGE_DEALER_ACTION:
-                fetch("http://localhost:8080/dealers/" + action.payload.id, {
+            case CHANGE_SUPPLY_ACTION:
+                fetch("http://localhost:8080/supplies/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -48,20 +48,20 @@ export const dealersMiddleware = () => {
                     body: JSON.stringify(action.payload)
                 }).then(response => {
                         if (response.status === 200) {
-                            let dealers = store.getState().dealers.dealers.slice();
-                            let changedDealers = dealers.map(dealer =>
+                            let supplies = store.getState().supplies.supplies.slice();
+                            let changedSupplies = supplies.map(dealer =>
                                 dealer.id === action.payload.id ?
                                     action.payload : dealer
                             )
-                            store.dispatch(setDealers(changedDealers));
+                            store.dispatch(setSupplies(changedSupplies));
                         } else {
                             alert("Не удалось изменить")
                         }
                     }
                 )
                 break;
-            case DELETE_DEALER_ACTION:
-                fetch("http://localhost:8080/dealers/" + action.payload, {
+            case DELETE_SUPPLY_ACTION:
+                fetch("http://localhost:8080/supplies/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -70,8 +70,8 @@ export const dealersMiddleware = () => {
                     method: "DELETE",
                 }).then(response => {
                         if (response.status === 200) {
-                            let dealers = store.getState().dealers.dealers.filter(item => item.id !== action.payload);
-                            store.dispatch(setDealers(dealers));
+                            let supplies = store.getState().supplies.supplies.filter(item => item.id !== action.payload);
+                            store.dispatch(setSupplies(supplies));
                         } else {
                             alert("Не удалось удалить")
                         }
