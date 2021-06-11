@@ -2,6 +2,7 @@
   "name": "project",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://192.168.43.39:8080",
   "dependencies": {
     "@devexpress/dx-react-core": "^2.7.5",
     "@devexpress/dx-react-grid": "^2.7.5",

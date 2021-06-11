@@ -9,25 +9,7 @@ import {
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 
-const rows = [{
-    login: "DrakeTHPS",
-    password: "$2y$12$MIJtaV1.pSCDOf512cHKcu7PS8XUQmEoRNJbkCZGKSPcxSOm.VZKK",
-    name: "Якин Н. Н.",
-    role: "Аdmin",
-    note: "Админ",
-}, {
-    login: "mp3ver",
-    password: "$2y$12$MIJtaV1.pSCDOf512cHKcu7PS8XUQmEoRNJbkCZGKSPcxSOm.VZKK",
-    name: "Чернов П. К.",
-    role: "Supply Specialist",
-    note: "Специалист по снабжению",
-}, {
-    login: "Dasem",
-    password: "$2y$12$kfJNVUCoM4SLFkaCHozh4.xo2cSZmszTWTwCN5VH/VF4o3b33y4c2",
-    name: "Андрей А. В.",
-    role: "Procurement specialist",
-    note: "Специалист по закупкам",
-}];
+const rows = []; //TODO: подключить redux
 
 const getRowId = row => row.id;
 

@@ -11,12 +11,19 @@ export const dealersMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_DEALERS_ACTION:
-                fetch("http://localhost:8080/dealer")
+                fetch("/dealer",{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...auth()
+                    },
+                    method: "GET",
+                })
                     .then(response => response.json())
                     .then(jsonData => store.dispatch(setDealers(jsonData)));
                 break;
             case ADD_DEALER_ACTION:
-                fetch("http://localhost:8080/dealer/", {
+                fetch("/dealer/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -38,13 +45,13 @@ export const dealersMiddleware = () => {
                 })
                 break;
             case CHANGE_DEALER_ACTION:
-                fetch("http://localhost:8080/dealer/" + action.payload.id, {
+                fetch("/dealer/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         ...auth()
                     },
-                    method: "PUT",
+                    method: "PATCH",
                     body: JSON.stringify(action.payload)
                 }).then(response => {
                         if (response.status === 200) {
@@ -61,7 +68,7 @@ export const dealersMiddleware = () => {
                 )
                 break;
             case DELETE_DEALER_ACTION:
-                fetch("http://localhost:8080/dealer/" + action.payload, {
+                fetch("/dealer/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

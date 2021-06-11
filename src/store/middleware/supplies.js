@@ -44,7 +44,7 @@ export const suppliesMiddleware = () => {
                         'Accept': 'application/json',
                         ...auth()
                     },
-                    method: "PUT",
+                    method: "PATCH",
                     body: JSON.stringify(action.payload)
                 }).then(response => {
                         if (response.status === 200) {

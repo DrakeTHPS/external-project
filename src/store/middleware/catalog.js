@@ -11,12 +11,20 @@ export const catalogMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_CATALOG_ACTION:
-                fetch("http://localhost:8080/catalog")
+                fetch("/catalog", {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...auth()
+                    },
+                    method: "GET",
+                    body: JSON.stringify(action.payload)
+                })
                     .then(response => response.json())
                     .then(jsonData => store.dispatch(setCatalog(jsonData)));
                 break;
             case ADD_CATALOG_ACTION:
-                fetch("http://localhost:8080/catalog/", {
+                fetch("/catalog/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

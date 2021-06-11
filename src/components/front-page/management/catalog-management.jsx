@@ -9,15 +9,7 @@ import {
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 
-const rows = [{
-    dealer: "Завод \"Градиолус\"",
-    vendorCode: "833A440",
-    price: "480"
-}, {
-    dealer: "ПНППК",
-    vendorCode: "148A840",
-    price: "1580"
-}];
+const rows = []; //TODO: подключить redux
 
 const getRowId = row => row.id;
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { EditingState } from '@devexpress/dx-react-grid';
 import {
     Grid,
@@ -8,20 +8,12 @@ import {
     TableEditColumn,
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
-
-const rows = [{
-    vendorCode: "148А840",
-    name:"Коленчатый вал",
-    note: null,
-},{
-    vendorCode: "833A440",
-    name:"Трубопровод",
-    note: "Для вертолёта",
-}];
+import {connect} from "react-redux";
+import {addDetail, deleteDetail, editDetail, getDetails} from "../../../store/actions/details";
 
 const getRowId = row => row.id;
 
-export default () => {
+const DetailsManagement = (props) => {
     const [columns] = useState([
         { name: 'vendorCode', title: 'Артикул' },
         { name: 'name', title: 'Наименование' },
@@ -29,37 +21,37 @@ export default () => {
     ]);
 
 
-    // const commitChanges = ({ added, changed, deleted }) => {
-    //     let changedRows;
-    //     if (added) {
-    //         const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-    //         changedRows = [
-    //             ...rows,
-    //             ...added.map((row, index) => ({
-    //                 id: startingAddedId + index,
-    //                 ...row,
-    //             })),
-    //         ];
-    //     }
-    //     if (changed) {
-    //         changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
-    //     }
-    //     if (deleted) {
-    //         const deletedSet = new Set(deleted);
-    //         changedRows = rows.filter(row => !deletedSet.has(row.id));
-    //     }
-    //     setRows(changedRows);
-    // };
+    useEffect(() => {
+        props.getDetails();
+    }, []);
+
+    const commitChanges = ({ added, changed, deleted }) => {
+        if (added) {
+            let addedRow ={...added[0]};
+            props.addDetail(addedRow);
+        }
+        if (changed) {
+            props.details.forEach(row =>{
+                if(changed[row.id]){
+                    let editedRawRow = {...row, ...changed[row.id]};
+                    props.editDetail(editedRawRow);
+                }
+            })
+        }
+        if (deleted) {
+            props.deleteDetail(deleted[0]);
+        }
+    };
 
     return (
         <div className="card">
             <Grid
-                rows={rows}
+                rows={props.details}
                 columns={columns}
                 getRowId={getRowId}
             >
                 <EditingState
-                    onCommitChanges={""}
+                    onCommitChanges={commitChanges}
                 />
                 <Table />
                 <TableHeaderRow />
@@ -81,3 +73,18 @@ export default () => {
         </div>
     );
 };
+
+const mapStateToProps = state => ({
+    details: state.details.details,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getDetails: () => dispatch(getDetails()),
+        addDetail: (detail) => dispatch(addDetail(detail)),
+        editDetail: (detail) => dispatch(editDetail(detail)),
+        deleteDetail: (detail) => dispatch(deleteDetail(detail)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsManagement);

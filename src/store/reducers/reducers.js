@@ -6,12 +6,14 @@ import {dealersReducer} from "./dealers";
 import {historyReducer} from "./priceHistory";
 import {suppliesReducer} from "./supplies";
 import {usersReducer} from "./users";
+import {detailsReducer} from "./details";
 
 export default combineReducers({
     auth: authReducer,
     basket: basketReducer,
     catalog: catalogReducer,
     dealers: dealersReducer,
+    details: detailsReducer,
     history: historyReducer,
     supplies: suppliesReducer,
     users: usersReducer,
