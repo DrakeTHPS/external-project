@@ -46,7 +46,7 @@ export const catalogMiddleware = () => {
                 })
                 break;
             case CHANGE_CATALOG_ACTION:
-                fetch("http://localhost:8080/catalog/" + action.payload.id, {
+                fetch("/catalog/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -69,7 +69,7 @@ export const catalogMiddleware = () => {
                 )
                 break;
             case DELETE_CATALOG_ACTION:
-                fetch("http://localhost:8080/catalog/" + action.payload, {
+                fetch("/catalog/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

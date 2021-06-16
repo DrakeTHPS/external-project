@@ -1,4 +1,4 @@
-import{SET_HISTORY_ACTION} from "../actions/priceHistory";
+import{SET_HISTORY_ACTION} from "../actions/price-history";
 
 const defaultState = {
     priceHistory:[]

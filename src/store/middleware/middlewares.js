@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import {catalogMiddleware} from "./catalog";
 import {dealersMiddleware} from "./dealers";
 import {detailsMiddleware} from "./details";
-import {historyMiddleware} from "./priceHistory";
+import {historyMiddleware} from "./price-history";
 import {suppliesMiddleware} from "./supplies";
 
 

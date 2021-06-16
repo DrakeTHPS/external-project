@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     SearchState,
     IntegratedFiltering,
@@ -11,10 +11,10 @@ import {
     TableHeaderRow,
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
+import {connect} from "react-redux";
+import {getHistory} from "../../../store/actions/price-history";
 
-const rows = []; //TODO: подключить redux
-
-export default () => {
+const PriceHistory = (props) => {
     const [columns] = useState([
         {name: 'detail', title: 'Артикул'},
         {name: 'dealer', title: "Поставщик"},
@@ -23,10 +23,14 @@ export default () => {
         {name: 'newPrice', title: 'Новая цена'},
     ]);
 
+    useEffect(() => {
+        props.getPriceHistory();
+    }, []);
+
     return (
         <div className="card">
             <Grid
-                rows={rows}
+                rows={props.history}
                 columns={columns}
             >
                 <SearchState/>
@@ -39,3 +43,17 @@ export default () => {
         </div>
     );
 };
+
+
+
+const mapStateToProps = state => ({
+    history: state.history.priceHistory,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getPriceHistory: () => dispatch(getHistory()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PriceHistory);

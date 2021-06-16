@@ -22,7 +22,7 @@
     padding:10px;
     align-items: center;
 }
-button{
+.navButton{
     margin: 0 5px;
     border: none;
     background-color: lightblue;

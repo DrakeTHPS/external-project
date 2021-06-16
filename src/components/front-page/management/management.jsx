@@ -9,6 +9,9 @@ import PriceHistory from './price-history';
 import UsersManagement from './users-management';
 import {ADMIN, PURCHASE, SUPPLY} from "../../../utils/consts";
 import {connect} from "react-redux";
+import {role} from "../../../utils/utils";
+
+const ROLE = role();
 
 const Management = (props) => {
     const [activeTab, setActiveTab] = useState('1');
@@ -16,11 +19,12 @@ const Management = (props) => {
     const toggle = tab => {
         if (activeTab !== tab) setActiveTab(tab);
     }
+    
 
     return (
         <div className={"catalog"}>
             <Nav tabs>
-                {(props.role === ADMIN || props.role === SUPPLY) && <NavItem>
+                {(ROLE === ADMIN || ROLE === SUPPLY) && <NavItem>
                     <NavLink
                         className={classnames({active: activeTab === '1'})}
                         onClick={() => {
@@ -30,7 +34,7 @@ const Management = (props) => {
                         Поставщики
                     </NavLink>
                 </NavItem>}
-                {(props.role === ADMIN || props.role === SUPPLY) && <NavItem>
+                {(ROLE === ADMIN || ROLE === SUPPLY) && <NavItem>
                     <NavLink
                         className={classnames({active: activeTab === '2'})}
                         onClick={() => {
@@ -50,7 +54,7 @@ const Management = (props) => {
                         Каталог
                     </NavLink>
                 </NavItem>
-                {(props.role === ADMIN || props.role === SUPPLY) && <NavItem>
+                {(ROLE === ADMIN || ROLE === SUPPLY) && <NavItem>
                     <NavLink
                         className={classnames({active: activeTab === '4'})}
                         onClick={() => {
@@ -60,7 +64,7 @@ const Management = (props) => {
                         История цен
                     </NavLink>
                 </NavItem>}
-                {(props.role === ADMIN || props.role === PURCHASE) && <NavItem>
+                {(ROLE === ADMIN || ROLE === PURCHASE) && <NavItem>
                     <NavLink
                         className={classnames({active: activeTab === '5'})}
                         onClick={() => {
@@ -70,7 +74,7 @@ const Management = (props) => {
                         Заказы
                     </NavLink>
                 </NavItem>}
-                {props.role === ADMIN && <NavItem>
+                {ROLE === ADMIN && <NavItem>
                     <NavLink
                         className={classnames({active: activeTab === '6'})}
                         onClick={() => {
@@ -82,22 +86,22 @@ const Management = (props) => {
                 </NavItem>}
             </Nav>
             <TabContent activeTab={activeTab}>
-                {(props.role === ADMIN || props.role === SUPPLY) && <TabPane tabId="1">
+                {(ROLE === ADMIN || ROLE === SUPPLY) && <TabPane tabId="1">
                     <DealersManagement/>
                 </TabPane>}
-                {(props.role === ADMIN || props.role === SUPPLY) && <TabPane tabId="2">
+                {(ROLE === ADMIN || ROLE === SUPPLY) && <TabPane tabId="2">
                     <DetailsManagement/>
                 </TabPane>}
                 <TabPane tabId="3">
                     <CatalogManagement/>
                 </TabPane>
-                {(props.role === ADMIN || props.role === SUPPLY) && <TabPane tabId="4">
+                {(ROLE === ADMIN || ROLE === SUPPLY) && <TabPane tabId="4">
                     <PriceHistory/>
                 </TabPane>}
-                {(props.role === ADMIN || props.role === PURCHASE) && <TabPane tabId="5">
+                {(ROLE === ADMIN || ROLE === PURCHASE) && <TabPane tabId="5">
                     <OrderManagement/>
                 </TabPane>}
-                {props.role === ADMIN && <TabPane tabId="6">
+                {ROLE === ADMIN && <TabPane tabId="6">
                     <UsersManagement/>
                 </TabPane>}
             </TabContent>

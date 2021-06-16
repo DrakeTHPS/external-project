@@ -14,10 +14,10 @@ const FrontPage = () => {
             <div className={styles.header}>
                 <h4>СУДИЗ</h4>
                 <div className={styles.navigation}>
-                    <button onClick={()=>history.push("/main/registry")}>Реестр закупок</button>
-                    <button onClick={()=>history.push("/main/catalog")}>Каталог</button>
-                    <button onClick={()=>history.push("/main/management")}>Управление</button>
-                    <button onClick={()=>history.push("/")}>Выйти</button>
+                    <button className={styles.navButton} onClick={()=>history.push("/main/registry")}>Реестр закупок</button>
+                    <button className={styles.navButton} onClick={()=>history.push("/main/catalog")}>Каталог</button>
+                    <button className={styles.navButton} onClick={()=>history.push("/main/management")}>Управление</button>
+                    <button className={styles.navButton} onClick={()=>history.push("/")}>Выйти</button>
                 </div>
             </div>
 
