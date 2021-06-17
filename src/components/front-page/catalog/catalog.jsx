@@ -1,37 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import DetailCard from "./detail-card/detail-card";
+import {connect} from "react-redux";
+import {getCatalog} from "../../../store/actions/catalog";
+import {setBasket} from "../../../store/actions/basket";
 
 
-const Catalog = () => {
-    const details = [{
-        name: "Деталь 1",
-        vendorCode: "8330A448",
-        description: "Описание детали 1"
-    }, {
-        name: "Деталь 2",
-        vendorCode: "8450A448",
-        description: "Описание детали 2"
-    }, {
-        name: "Деталь 3",
-        vendorCode: "1230A428",
-        description: "Описание детали 3"
-    }, {
-        name: "Деталь 4",
-        vendorCode: "2280A448",
-        description: "Описание детали 4"
-    }, {
-        name: "Деталь 5",
-        vendorCode: "8330A040",
-        description: "Описание детали 5"
-    }];
+const Catalog = (props) => {
+    useEffect(() => {
+        props.getCatalog();
+    }, []);
 
     return (
         <div className="catalog">
-            <div>
-                {details.map(detail => <DetailCard detail={detail}/>)}
-            </div>
+                {props.catalog.map(detail => <DetailCard detail={detail}/>)}
         </div>
     )
 }
 
-export default Catalog;
+
+const mapStateToProps = state => ({
+    catalog: state.catalog.catalog,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getCatalog: () => dispatch(getCatalog()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

@@ -1,7 +1,7 @@
 import{SET_BASKET_ACTION} from "../actions/basket";
 
 const defaultState = {
-    basket:[]
+    basket: {}
 }
 
 export const basketReducer = (state = defaultState, action) =>{

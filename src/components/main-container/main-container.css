@@ -1,12 +1,18 @@
-
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 
 .catalog {
     flex: 1;
+    justify-content: space-between;
     padding: 1% 10%;
 }
 
 .detailCard {
-    width: 400px;
+    min-width: 300px;
+    width: 23%;
     margin: 5px;
     display: inline-block;
 }

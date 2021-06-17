@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {EditingState} from '@devexpress/dx-react-grid';
 import {
     Grid,
@@ -8,12 +8,14 @@ import {
     TableEditColumn,
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
+import {addSupply, deleteSupply, editSupply, getSupplies} from "../../../store/actions/supplies";
+import {connect} from "react-redux";
 
 const rows = []; //TODO: подключить redux
 
 const getRowId = row => row.id;
 
-export default () => {
+const SupplyManagement = (props) => {
     const [columns] = useState([
         {name: 'detail', title: 'Артикул'},
         {name: 'dealer', title: "Поставщик"},
@@ -23,27 +25,28 @@ export default () => {
     ]);
 
 
-    // const commitChanges = ({ added, changed, deleted }) => {
-    //     let changedRows;
-    //     if (added) {
-    //         const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-    //         changedRows = [
-    //             ...rows,
-    //             ...added.map((row, index) => ({
-    //                 id: startingAddedId + index,
-    //                 ...row,
-    //             })),
-    //         ];
-    //     }
-    //     if (changed) {
-    //         changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
-    //     }
-    //     if (deleted) {
-    //         const deletedSet = new Set(deleted);
-    //         changedRows = rows.filter(row => !deletedSet.has(row.id));
-    //     }
-    //     setRows(changedRows);
-    // };
+    useEffect(() => {
+        props.getSupplies();
+    }, []);
+
+    const commitChanges = ({ added, changed, deleted }) => {
+        if (added) {
+            let addedRow ={...added[0]};
+            props.addSupply(addedRow);
+        }
+        if (changed) {
+            props.dealers.forEach(row =>{
+                if(changed[row.id]){
+                    let editedRawRow = {...row, ...changed[row.id]};
+                    props.editSupply(editedRawRow);
+                }
+            })
+        }
+        if (deleted) {
+            props.deleteSupply(deleted[0]);
+        }
+    };
+    
 
     return (
         <div className="card">
@@ -53,6 +56,7 @@ export default () => {
                 getRowId={getRowId}
             >
                 <EditingState
+                    onCommitChanges={commitChanges}
                 />
                 <Table/>
                 <TableHeaderRow/>
@@ -74,3 +78,19 @@ export default () => {
         </div>
     );
 };
+
+
+const mapStateToProps = state => ({
+    supplies: state.supplies.supplies,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getSupplies: () => dispatch(getSupplies()),
+        addSupply: (dealer) => dispatch(addSupply(dealer)),
+        editSupply: (dealer) => dispatch(editSupply(dealer)),
+        deleteSupply: (dealer) => dispatch(deleteSupply(dealer)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SupplyManagement);
