@@ -1,12 +1,17 @@
-import{SET_SUPPLIES_ACTION} from "../actions/supplies";
+import {SET_MY_SUPPLIES_ACTION, SET_SUPPLIES_ACTION} from "../actions/supplies";
 
 const defaultState = {
-    supplies:[]
+    supplies:[],
 }
 
 export const suppliesReducer = (state = defaultState, action) =>{
     switch (action.type){
         case SET_SUPPLIES_ACTION:
+            return {
+                ...state,
+                supplies: action.payload
+            }
+        case SET_MY_SUPPLIES_ACTION:
             return {
                 ...state,
                 supplies: action.payload

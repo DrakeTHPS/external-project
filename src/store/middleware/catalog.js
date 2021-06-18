@@ -11,7 +11,7 @@ export const catalogMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_CATALOG_ACTION:
-                fetch("/catalog", {
+                fetch("/api/catalog", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -24,7 +24,7 @@ export const catalogMiddleware = () => {
                     .then(jsonData => store.dispatch(setCatalog(jsonData)));
                 break;
             case ADD_CATALOG_ACTION:
-                fetch("/catalog/", {
+                fetch("/api/catalog/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -46,7 +46,7 @@ export const catalogMiddleware = () => {
                 })
                 break;
             case CHANGE_CATALOG_ACTION:
-                fetch("/catalog/" + action.payload.id, {
+                fetch("/api/catalog/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -69,7 +69,7 @@ export const catalogMiddleware = () => {
                 )
                 break;
             case DELETE_CATALOG_ACTION:
-                fetch("/catalog/" + action.payload, {
+                fetch("/api/catalog/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

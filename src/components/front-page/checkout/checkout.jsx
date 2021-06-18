@@ -3,6 +3,7 @@ import styles from './checkout.module.css';
 import {useHistory} from "react-router";
 import {setBasket} from "../../../store/actions/basket";
 import {connect} from "react-redux";
+import {addSupply} from "../../../store/actions/supplies";
 
 
 const Checkout = (props) => {
@@ -15,6 +16,15 @@ const Checkout = (props) => {
         }
     }, []);
 
+    const tryToBuy = () =>{
+        let supply = {
+            catalogRecord: props.basket,
+            amount: amount
+        }
+        props.addSupply(supply);
+        history.push("/main/catalog");
+    }
+
     return (
         <div className="catalog">
             <div className={styles.receipt}>
@@ -23,7 +33,7 @@ const Checkout = (props) => {
                     <span>Наименование</span> <span>Сумма</span>
                 </div>
                 <div className={styles.row}>
-                    <span>{props.basket.vendorCode + ' ' + props.basket.name}</span>
+                    <span>{props.basket.vendorCode + ' ' + props.basket.detail.name}</span>
                     <button className={styles.amountButton} onClick={()=>{amount!==1 && setAmount(amount-1)}}>-</button>
                     <span>{amount}</span>
                     <button className={styles.amountButton} onClick={()=>{setAmount(amount+1)}}>+</button>
@@ -32,7 +42,7 @@ const Checkout = (props) => {
                 <div className={styles.row}>
                     <span>Всего</span> <span>{amount * props.basket.currentPrice+' руб.'}</span>
                 </div>
-                <button className={"submit_button"} onClick={() => history.push("/main/catalog")}>Оформить заказ
+                <button className={"submit_button"} onClick={() => tryToBuy()}>Оформить заказ
                 </button>
             </div>
         </div>
@@ -49,6 +59,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => {
     return {
         setBasket: (detail) => dispatch(setBasket(detail)),
+        addSupply: (supply) => dispatch(addSupply(supply))
     }
 }
 

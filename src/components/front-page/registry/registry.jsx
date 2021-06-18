@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     SearchState,
     IntegratedFiltering,
@@ -11,31 +11,10 @@ import {
     TableHeaderRow,
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
+import {connect} from "react-redux";
+import {getMySupplies} from "../../../store/actions/supplies";
 
-const generateRows = [{
-    vendorCode: "833A440",
-    deviceName: "Трубопровод",
-    dealer: "Завод \"Градиолус\"",
-    amount: 100,
-    totalPrice: 48000,
-    date: "2020-12-12 15:30"
-}, {
-    vendorCode: "148A840",
-    dealer: "ПНППК",
-    deviceName: "Коленчатый вал",
-    amount: 50,
-    totalPrice: 79000,
-    date: "2021-01-01 11:40"
-}, {
-    vendorCode: "148A840",
-    dealer: "ПНППК",
-    deviceName: "Коленчатый вал",
-    amount: 50,
-    totalPrice: 79000,
-    date: "2021-02-02 11:40"
-}];
-
-const Registry = () => {
+const Registry = (props) => {
     const [columns] = useState([
         {name: 'vendorCode', title: 'Артикул'},
         {name: 'deviceName', title: 'Наименование'},
@@ -44,12 +23,15 @@ const Registry = () => {
         {name: 'totalPrice', title: 'Итого'},
         {name: 'date', title: 'Дата'},
     ]);
-    const [rows] = useState(generateRows);
+
+    useEffect(() => {
+        props.getMySupplies();
+    }, []);
 
     return (
         <div className="card" style={{margin: "1%"}}>
             <Grid
-                rows={rows}
+                rows={props.supplies}
                 columns={columns}
             >
                 <SearchState/>
@@ -63,4 +45,14 @@ const Registry = () => {
     );
 };
 
-export default Registry;
+const mapStateToProps = state => ({
+    supplies: state.supplies.supplies,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getMySupplies: () => dispatch(getMySupplies()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Registry);

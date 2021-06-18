@@ -11,12 +11,12 @@ export const usersMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_USERS_ACTION:
-                fetch("http://localhost:8080/users")
+                fetch("/api/users")
                     .then(response => response.json())
                     .then(jsonData => store.dispatch(setUsers(jsonData)));
                 break;
             case ADD_USER_ACTION:
-                fetch("http://localhost:8080/users/", {
+                fetch("/api/users/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -38,7 +38,7 @@ export const usersMiddleware = () => {
                 })
                 break;
             case CHANGE_USER_ACTION:
-                fetch("http://localhost:8080/users/" + action.payload.id, {
+                fetch("/api/users/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -61,7 +61,7 @@ export const usersMiddleware = () => {
                 )
                 break;
             case DELETE_USER_ACTION:
-                fetch("http://localhost:8080/users/" + action.payload, {
+                fetch("/api/users/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

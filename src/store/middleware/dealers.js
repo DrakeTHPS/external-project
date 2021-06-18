@@ -11,7 +11,7 @@ export const dealersMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_DEALERS_ACTION:
-                fetch("/dealer",{
+                fetch("/api/dealer",{
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -23,7 +23,7 @@ export const dealersMiddleware = () => {
                     .then(jsonData => store.dispatch(setDealers(jsonData)));
                 break;
             case ADD_DEALER_ACTION:
-                fetch("/dealer/", {
+                fetch("/api/dealer/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -45,7 +45,7 @@ export const dealersMiddleware = () => {
                 })
                 break;
             case CHANGE_DEALER_ACTION:
-                fetch("/dealer/" + action.payload.id, {
+                fetch("/api/dealer/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -68,7 +68,7 @@ export const dealersMiddleware = () => {
                 )
                 break;
             case DELETE_DEALER_ACTION:
-                fetch("/dealer/" + action.payload, {
+                fetch("/api/dealer/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

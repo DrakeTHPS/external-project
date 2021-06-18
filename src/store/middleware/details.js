@@ -11,7 +11,7 @@ export const detailsMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_DETAILS_ACTION:
-                fetch("/detail",{
+                fetch("/api/detail",{
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -23,7 +23,7 @@ export const detailsMiddleware = () => {
                     .then(jsonData => store.dispatch(setDetails(jsonData)));
                 break;
             case ADD_DETAIL_ACTION:
-                fetch("/detail/", {
+                fetch("/api/detail/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -45,7 +45,7 @@ export const detailsMiddleware = () => {
                 })
                 break;
             case CHANGE_DETAIL_ACTION:
-                fetch("/detail/" + action.payload.id, {
+                fetch("/api/detail/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -68,7 +68,7 @@ export const detailsMiddleware = () => {
                 )
                 break;
             case DELETE_DETAIL_ACTION:
-                fetch("/detail/" + action.payload, {
+                fetch("/api/detail/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

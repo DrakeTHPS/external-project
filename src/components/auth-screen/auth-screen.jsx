@@ -10,7 +10,7 @@ const AuthScreen = (props) => {
     const [password, setPassword] = useState();
 
     const tryToRegister = () => {
-        fetch("/signin", {
+        fetch("/api/signin", {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',

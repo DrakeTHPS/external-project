@@ -5,7 +5,7 @@ export const historyMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_HISTORY_ACTION:
-                fetch("/price_history", {
+                fetch("/api/price_history", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
