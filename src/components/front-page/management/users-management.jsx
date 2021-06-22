@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {EditingState} from '@devexpress/dx-react-grid';
+import React, {useEffect, useState} from 'react';
+import {DataTypeProvider, EditingState} from '@devexpress/dx-react-grid';
 import {
     Grid,
     Table,
@@ -8,51 +8,104 @@ import {
     TableEditColumn,
 } from '@devexpress/dx-react-grid-bootstrap4';
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
-
-const rows = []; //TODO: подключить redux
+import {ADMIN, PURCHASE, SUPPLY} from "../../../utils/consts";
+import {connect} from "react-redux";
+import {addUser, deleteUser, editUser, getUsers} from "../../../store/actions/users";
+import {Input} from "reactstrap";
 
 const getRowId = row => row.id;
 
-export default () => {
+const roles = [ADMIN, SUPPLY, PURCHASE];
+
+const UsersManagement = (props) => {
+
+    useEffect(() => {
+        props.getUsers();
+    }, []);
+
     const [columns] = useState([
         {name: 'login', title: 'Логин'},
         {name: 'password', title: 'Пароль'},
-        {name: 'name', title: 'ФИО'},
         {name: 'role', title: 'Роль'},
-        {name: 'note', title: 'Примечание'},
     ]);
 
+    const RoleEditor = ({value, onValueChange}) => {
+        return (
+            <Input type="select" name="select" value={value ? value : ADMIN} onChange={event => {
+                onValueChange(event.target.value)
+            }}>
+                {roles.map(role => <option value={role}>{role}</option>)}
+            </Input>
+        );
+    }
 
-    // const commitChanges = ({ added, changed, deleted }) => {
-    //     let changedRows;
-    //     if (added) {
-    //         const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-    //         changedRows = [
-    //             ...rows,
-    //             ...added.map((row, index) => ({
-    //                 id: startingAddedId + index,
-    //                 ...row,
-    //             })),
-    //         ];
-    //     }
-    //     if (changed) {
-    //         changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
-    //     }
-    //     if (deleted) {
-    //         const deletedSet = new Set(deleted);
-    //         changedRows = rows.filter(row => !deletedSet.has(row.id));
-    //     }
-    //     setRows(changedRows);
-    // };
+    const RoleTypeProvider = props => (
+        <DataTypeProvider
+            editorComponent={RoleEditor}
+            {...props}
+        />
+    );
+
+
+    const PasswordEditor = ({value, onValueChange}) => {
+        return (
+            <input type="password" placeholder={"Установите пароль"} onChange={(event) => {
+                onValueChange(event.target.value)
+            }}/>
+        );
+    }
+
+    const PasswordTypeProvider = props => (
+        <DataTypeProvider
+            editorComponent={PasswordEditor}
+            {...props}
+        />
+    );
+
+    const [roleSelectColumns] = useState(['role']);
+    const [passwordSelectColumns] = useState(['password']);
+
+    const commitChanges = ({added, changed, deleted}) => {
+        if (added) {
+            let addedRow = {...added[0], roleUser:{role: added.role?added.role:ADMIN}, role: added.role?added.role:ADMIN};
+            props.addUser(addedRow);
+        }
+        //TODO: пофиксить изменение
+        if (changed) {
+            props.users.forEach(row => {
+                if (changed[row.id]) {
+                    let editedRawRow = {...row, ...changed[row.id], roleUser:{role: changed[row.id].role?changed[row.id].role:row.role}, role: changed[row.id].role?changed[row.id].role:row.role};
+                    props.editUser(editedRawRow);
+                }
+            })
+        }
+        if (deleted) {
+            props.deleteUser(deleted[0]);
+        }
+    };
 
     return (
         <div className="card">
             <Grid
-                rows={rows}
+                rows={props.users ? props.users.map(user => {
+                    return{
+                        ...user,
+                        password: '********'
+                    }
+                }) : []}
                 columns={columns}
                 getRowId={getRowId}
             >
+
+                <RoleTypeProvider
+                    for={roleSelectColumns}
+                />
+                <PasswordTypeProvider
+                    for={passwordSelectColumns}
+                />
+
                 <EditingState
+                    onCommitChanges={commitChanges}
                 />
                 <Table/>
                 <TableHeaderRow/>
@@ -61,11 +114,11 @@ export default () => {
                     showAddCommand
                     showEditCommand
                     showDeleteCommand
-                    width = {"200px"}
-                    messages = {{
-                        addCommand:"Добавить",
-                        editCommand:"Изменить",
-                        deleteCommand:"Удалить",
+                    width={"200px"}
+                    messages={{
+                        addCommand: "Добавить",
+                        editCommand: "Изменить",
+                        deleteCommand: "Удалить",
                         commitCommand: "Сохранить",
                         cancelCommand: "Отменить",
                     }}
@@ -74,3 +127,18 @@ export default () => {
         </div>
     );
 };
+
+const mapStateToProps = state => ({
+    users: state.users.users,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getUsers: () => dispatch(getUsers()),
+        addUser: (user) => dispatch(addUser(user)),
+        editUser: (user) => dispatch(editUser(user)),
+        deleteUser: (user) => dispatch(deleteUser(user)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersManagement);

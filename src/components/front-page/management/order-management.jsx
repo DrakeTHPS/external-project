@@ -10,8 +10,7 @@ import {
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import {addSupply, deleteSupply, editSupply, getSupplies} from "../../../store/actions/supplies";
 import {connect} from "react-redux";
-
-const rows = []; //TODO: подключить redux
+import {getSuppliesForManagement} from "../../../store/selectors/supplies";
 
 const getRowId = row => row.id;
 
@@ -22,6 +21,7 @@ const SupplyManagement = (props) => {
         {name: 'date', title: 'Дата'},
         {name: 'amount', title: 'Кол-во'},
         {name: 'totalPrice', title: 'Итого'},
+        {name: 'user', title: 'Покупатель'}
     ]);
 
 
@@ -34,14 +34,6 @@ const SupplyManagement = (props) => {
             let addedRow ={...added[0]};
             props.addSupply(addedRow);
         }
-        if (changed) {
-            props.dealers.forEach(row =>{
-                if(changed[row.id]){
-                    let editedRawRow = {...row, ...changed[row.id]};
-                    props.editSupply(editedRawRow);
-                }
-            })
-        }
         if (deleted) {
             props.deleteSupply(deleted[0]);
         }
@@ -51,7 +43,7 @@ const SupplyManagement = (props) => {
     return (
         <div className="card">
             <Grid
-                rows={rows}
+                rows={props.supplies}
                 columns={columns}
                 getRowId={getRowId}
             >
@@ -63,12 +55,10 @@ const SupplyManagement = (props) => {
                 <TableEditRow/>
                 <TableEditColumn
                     showAddCommand
-                    showEditCommand
                     showDeleteCommand
                     width = {"200px"}
                     messages = {{
                         addCommand:"Добавить",
-                        editCommand:"Изменить",
                         deleteCommand:"Удалить",
                         commitCommand: "Сохранить",
                         cancelCommand: "Отменить",
@@ -81,7 +71,8 @@ const SupplyManagement = (props) => {
 
 
 const mapStateToProps = state => ({
-    supplies: state.supplies.supplies,
+    supplies: getSuppliesForManagement(state),
+    initialSupplies: state.supplies.supplies,
 })
 
 const mapDispatchToProps = dispatch => {

@@ -11,12 +11,23 @@ export const usersMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_USERS_ACTION:
-                fetch("/api/users")
+                fetch("/api/user", {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...auth()
+                    },
+                    method: "GET",
+                    body: JSON.stringify(action.payload)
+                })
                     .then(response => response.json())
-                    .then(jsonData => store.dispatch(setUsers(jsonData)));
+                    .then(jsonData => {
+                        let users = jsonData.map(user => {return {...user, role:user.roleUser.role}})
+                        store.dispatch(setUsers(users))
+                    });
                 break;
             case ADD_USER_ACTION:
-                fetch("/api/users/", {
+                fetch("/api/user/", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -38,7 +49,7 @@ export const usersMiddleware = () => {
                 })
                 break;
             case CHANGE_USER_ACTION:
-                fetch("/api/users/" + action.payload.id, {
+                fetch("/api/user/" + action.payload.id, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -61,7 +72,7 @@ export const usersMiddleware = () => {
                 )
                 break;
             case DELETE_USER_ACTION:
-                fetch("/api/users/" + action.payload, {
+                fetch("/api/user/" + action.payload, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',

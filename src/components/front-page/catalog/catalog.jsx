@@ -12,7 +12,7 @@ const Catalog = (props) => {
 
     return (
         <div className="catalog">
-                {props.catalog.map(detail => <DetailCard detail={detail}/>)}
+                {props.catalog.map(detail => <DetailCard key={detail.id} detail={detail}/>)}
         </div>
     )
 }

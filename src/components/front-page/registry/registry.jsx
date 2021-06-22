@@ -46,7 +46,7 @@ const Registry = (props) => {
 };
 
 const mapStateToProps = state => ({
-    supplies: state.supplies.supplies,
+    supplies: state.supplies.mySupplies,
 })
 
 const mapDispatchToProps = dispatch => {

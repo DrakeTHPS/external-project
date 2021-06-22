@@ -20,11 +20,6 @@ const DetailsManagement = (props) => {
         { name: 'note', title: 'Примечание' },
     ]);
 
-
-    useEffect(() => {
-        props.getDetails();
-    }, []);
-
     const commitChanges = ({ added, changed, deleted }) => {
         if (added) {
             let addedRow ={...added[0]};
@@ -80,7 +75,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        getDetails: () => dispatch(getDetails()),
         addDetail: (detail) => dispatch(addDetail(detail)),
         editDetail: (detail) => dispatch(editDetail(detail)),
         deleteDetail: (detail) => dispatch(deleteDetail(detail)),

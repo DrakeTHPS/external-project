@@ -21,8 +21,10 @@ const AuthScreen = (props) => {
             .then(response => {
                 if (response.status === 200) {
                     return response.json()
-                } else {
-                    throw new Error("Something went wrong")
+                } else if(response.status === 401){
+                    throw new Error("Неверный логин или пароль")
+                } else if(response.status === 500){
+                    throw new Error("Превышен лимит попыток входа, попробуйте позже")
                 }
             })
             .then(jsonData => {

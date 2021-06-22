@@ -2,6 +2,7 @@ import {SET_MY_SUPPLIES_ACTION, SET_SUPPLIES_ACTION} from "../actions/supplies";
 
 const defaultState = {
     supplies:[],
+    mySupplies:[]
 }
 
 export const suppliesReducer = (state = defaultState, action) =>{
@@ -14,7 +15,7 @@ export const suppliesReducer = (state = defaultState, action) =>{
         case SET_MY_SUPPLIES_ACTION:
             return {
                 ...state,
-                supplies: action.payload
+                mySupplies: action.payload
             }
         default:
             return state;

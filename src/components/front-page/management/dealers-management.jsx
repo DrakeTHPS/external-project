@@ -20,10 +20,6 @@ const DealersManagement = (props) => {
         { name: 'phoneNumber', title: 'Номер телефона' },
     ]);
 
-    useEffect(() => {
-        props.getDealers();
-    }, []);
-
     const commitChanges = ({ added, changed, deleted }) => {
         if (added) {
             let addedRow ={...added[0]};
@@ -80,7 +76,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        getDealers: () => dispatch(getDealers()),
         addDealer: (dealer) => dispatch(addDealer(dealer)),
         editDealer: (dealer) => dispatch(editDealer(dealer)),
         deleteDealer: (dealer) => dispatch(deleteDealer(dealer)),
