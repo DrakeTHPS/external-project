@@ -28,13 +28,40 @@ const CatalogManagement = (props) => {
 
     const commitChanges = ({ added, changed, deleted }) => {
         if (added) {
-            let addedRow ={...added[0]};
+            let addedRow = {};
+            if(added[0].dealer){
+                addedRow.dealer = (props.dealers.filter(dealer => dealer.id==added[0].dealer))[0]
+            } else {
+                addedRow.dealer = props.dealers[0]
+            }
+
+            if(added[0].vendorCode){
+                addedRow.detail = (props.details.filter(detail => detail.id==added[0].detail))[0]
+            } else {
+                addedRow.detail = props.details[0]
+            }
+            addedRow.currentPrice = added[0].currentPrice;
             props.addCatalog(addedRow);
         }
         if (changed) {
             props.initialCatalog.forEach(row =>{
                 if(changed[row.id]){
-                    let editedRawRow = {...row, ...changed[row.id]};
+                    let editedRawRow = {};
+                    if(changed[row.id].dealer){
+                        editedRawRow.dealer = (props.dealers.filter(dealer => dealer.id==changed[0].dealer))[0]
+                    } else {
+                        editedRawRow.dealer = row.dealer
+                    }
+                    if(changed[row.id].vendorCode){
+                        editedRawRow.detail = (props.details.filter(detail => detail.id==added[0].detail))[0]
+                    } else {
+                        editedRawRow.detail = row.detail
+                    }
+                    if(changed[row.id].currentPrice){
+                        editedRawRow.currentPrice = changed[row.id].currentPrice;
+                    } else {
+                        editedRawRow.currentPrice = row.currentPrice;
+                    }
                     props.editCatalog(editedRawRow);
                 }
             })
@@ -46,10 +73,10 @@ const CatalogManagement = (props) => {
 
     const DealerEditor = ({value, onValueChange}) => {
         return (
-            <Input type="select" name="select"  value={value ? value : props.dealers[0].name} onChange={event => {
+            <Input type="select" name="select"  value={value ? value : props.dealers[0].id} onChange={event => {
                 onValueChange(event.target.value)
             }}>
-                {props.dealers.map(dealer => <option key={dealer.id} value={dealer.name}>{dealer.name}</option>)}
+                {props.dealers.map(dealer => <option key={dealer.id} value={dealer.id}>{dealer.name}</option>)}
             </Input>
         );
     }
@@ -63,10 +90,10 @@ const CatalogManagement = (props) => {
 
     const DetailEditor = ({value, onValueChange}) => {
         return (
-            <Input type="select" name="select" value={value ? value : props.details[0].vendorCode}  onChange={event => {
+            <Input type="select" name="select" value={value ? value : props.details[0].id}  onChange={event => {
                 onValueChange(event.target.value)
             }}>
-                {props.details.map(detail => <option key={detail.id} value={detail.vendorCode}>{detail.vendorCode}</option>)}
+                {props.details.map(detail => <option key={detail.id} value={detail.id}>{detail.vendorCode}</option>)}
             </Input>
         );
     }

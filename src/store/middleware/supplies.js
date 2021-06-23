@@ -68,29 +68,6 @@ export const suppliesMiddleware = () => {
                     store.dispatch(setSupplies(supplies));
                 })
                 break;
-            case CHANGE_SUPPLY_ACTION:
-                fetch("/api/supply/" + action.payload.id, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        ...auth()
-                    },
-                    method: "PATCH",
-                    body: JSON.stringify(action.payload)
-                }).then(response => {
-                        if (response.status === 200) {
-                            let supplies = store.getState().supplies.supplies.slice();
-                            let changedSupplies = supplies.map(dealer =>
-                                dealer.id === action.payload.id ?
-                                    action.payload : dealer
-                            )
-                            store.dispatch(setSupplies(changedSupplies));
-                        } else {
-                            alert("Не удалось изменить")
-                        }
-                    }
-                )
-                break;
             case DELETE_SUPPLY_ACTION:
                 fetch("/api/supply/" + action.payload, {
                     headers: {

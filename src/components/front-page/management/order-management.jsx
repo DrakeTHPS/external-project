@@ -30,10 +30,6 @@ const SupplyManagement = (props) => {
     }, []);
 
     const commitChanges = ({ added, changed, deleted }) => {
-        if (added) {
-            let addedRow ={...added[0]};
-            props.addSupply(addedRow);
-        }
         if (deleted) {
             props.deleteSupply(deleted[0]);
         }
@@ -54,14 +50,10 @@ const SupplyManagement = (props) => {
                 <TableHeaderRow/>
                 <TableEditRow/>
                 <TableEditColumn
-                    showAddCommand
                     showDeleteCommand
                     width = {"200px"}
                     messages = {{
-                        addCommand:"Добавить",
                         deleteCommand:"Удалить",
-                        commitCommand: "Сохранить",
-                        cancelCommand: "Отменить",
                     }}
                 />
             </Grid>
