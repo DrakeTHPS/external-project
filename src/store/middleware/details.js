@@ -19,8 +19,14 @@ export const detailsMiddleware = () => {
                     },
                     method: "GET",
                 })
-                    .then(response => response.json())
-                    .then(jsonData => store.dispatch(setDetails(jsonData)));
+                    .then(response => {
+                        if (response.status === 200) {
+                            response.json()
+                        } else {
+                            throw new Error("Приостановлен несанкционированный доступ")
+                        }
+                    })
+                    .then(jsonData => store.dispatch(setDetails(jsonData))).catch((error) => alert(error.message));
                 break;
             case ADD_DETAIL_ACTION:
                 fetch("/api/detail/", {
@@ -35,14 +41,14 @@ export const detailsMiddleware = () => {
                         if (response.status === 201) {
                             return response.json();
                         } else {
-                            alert("Не удалось добавить")
+                            throw new Error("Не удалось добавить")
                         }
                     }
                 ).then(jsonData => {
                     let details = store.getState().details.details.slice();
                     details.push(jsonData);
                     store.dispatch(setDetails(details));
-                })
+                }).catch((error) => alert(error.message))
                 break;
             case CHANGE_DETAIL_ACTION:
                 fetch("/api/detail/" + action.payload.id, {

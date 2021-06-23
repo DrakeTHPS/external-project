@@ -9,6 +9,9 @@ import Checkout from "./checkout/checkout";
 
 const FrontPage = () => {
     const history = useHistory();
+    const signOut = () => {
+        localStorage.clear();
+    }
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -18,7 +21,7 @@ const FrontPage = () => {
                     </button>
                     <button className={styles.navButton} onClick={() => history.push("/main/catalog")}>Каталог</button>
                     <button className={styles.navButton} onClick={() => history.push("/main/management")}>Управление</button>
-                    <a href={'/'}>
+                    <a href={'/'} onClick={signOut}>
                         <div className={styles.navButton}>Выйти</div>
                     </a>
                 </div>

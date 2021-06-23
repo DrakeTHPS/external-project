@@ -20,8 +20,14 @@ export const catalogMiddleware = () => {
                     method: "GET",
                     body: JSON.stringify(action.payload)
                 })
-                    .then(response => response.json())
-                    .then(jsonData => store.dispatch(setCatalog(jsonData)));
+                    .then(response => {
+                        if (response.status === 200) {
+                            response.json()
+                        } else {
+                            throw new Error("Приостановлен несанкционированный доступ")
+                        }
+                    })
+                    .then(jsonData => store.dispatch(setCatalog(jsonData))).catch((error) => alert(error.message));
                 break;
             case ADD_CATALOG_ACTION:
                 fetch("/api/catalog/", {
@@ -36,14 +42,14 @@ export const catalogMiddleware = () => {
                         if (response.status === 201) {
                             return response.json();
                         } else {
-                            alert("Не удалось добавить")
+                            throw new Error("Не удалось добавить")
                         }
                     }
                 ).then(jsonData => {
                     let catalog = store.getState().catalog.catalog.slice();
                     catalog.push(jsonData);
                     store.dispatch(setCatalog(catalog));
-                })
+                }).catch((error) => alert(error.message))
                 break;
             case CHANGE_CATALOG_ACTION:
                 fetch("/api/catalog/" + action.payload.id, {

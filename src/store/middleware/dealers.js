@@ -11,7 +11,7 @@ export const dealersMiddleware = () => {
     return store => next => action => {
         switch (action.type) {
             case GET_DEALERS_ACTION:
-                fetch("/api/dealer",{
+                fetch("/api/dealer", {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -19,8 +19,14 @@ export const dealersMiddleware = () => {
                     },
                     method: "GET",
                 })
-                    .then(response => response.json())
-                    .then(jsonData => store.dispatch(setDealers(jsonData)));
+                    .then(response => {
+                        if (response.status === 200) {
+                            response.json()
+                        } else {
+                            throw new Error("Приостановлен несанкционированный доступ")
+                        }
+                    })
+                    .then(jsonData => store.dispatch(setDealers(jsonData))).catch((error) => alert(error.message));
                 break;
             case ADD_DEALER_ACTION:
                 fetch("/api/dealer/", {
@@ -35,14 +41,14 @@ export const dealersMiddleware = () => {
                         if (response.status === 201) {
                             return response.json();
                         } else {
-                            alert("Не удалось добавить")
+                            throw new Error("Не удалось добавить")
                         }
                     }
                 ).then(jsonData => {
                     let dealers = store.getState().dealers.dealers.slice();
                     dealers.push(jsonData);
                     store.dispatch(setDealers(dealers));
-                })
+                }).catch((error) => alert(error.message))
                 break;
             case CHANGE_DEALER_ACTION:
                 fetch("/api/dealer/" + action.payload.id, {

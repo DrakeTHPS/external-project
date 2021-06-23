@@ -20,8 +20,14 @@ export const suppliesMiddleware = () => {
                     method: "GET",
                     body: JSON.stringify(action.payload)
                 })
-                    .then(response => response.json())
-                    .then(jsonData => store.dispatch(setSupplies(jsonData)));
+                    .then(response => {
+                        if (response.status === 200) {
+                            response.json()
+                        } else {
+                            throw new Error("Приостановлен несанкционированный доступ")
+                        }
+                    })
+                    .then(jsonData => store.dispatch(setSupplies(jsonData))).catch((error) => alert(error.message));
                 break;
             case GET_MY_SUPPLIES_ACTION:
                 fetch("/api/supply/my/", {
@@ -33,7 +39,13 @@ export const suppliesMiddleware = () => {
                     method: "GET",
                     body: JSON.stringify(action.payload)
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 200) {
+                            response.json()
+                        } else {
+                            throw new Error("Приостановлен несанкционированный доступ")
+                        }
+                    })
                     .then(jsonData => {
                         let mySupplies = jsonData.map(supply => {return {
                             vendorCode: supply.catalogRecord.detail.vendorCode,
@@ -44,7 +56,7 @@ export const suppliesMiddleware = () => {
                             date: supply.date
                         }})
                         store.dispatch(setMySupplies(mySupplies));
-                    });
+                    }).catch((error) => alert(error.message));
                 break;
             case ADD_SUPPLY_ACTION:
                 fetch("/api/supply/", {
@@ -59,14 +71,14 @@ export const suppliesMiddleware = () => {
                         if (response.status === 201) {
                             return response.json();
                         } else {
-                            alert("Не удалось добавить")
+                            throw new Error("Не удалось добавить")
                         }
                     }
                 ).then(jsonData => {
                     let supplies = store.getState().supplies.supplies.slice();
                     supplies.push(jsonData);
                     store.dispatch(setSupplies(supplies));
-                })
+                }).catch((error) => alert(error.message))
                 break;
             case DELETE_SUPPLY_ACTION:
                 fetch("/api/supply/" + action.payload, {

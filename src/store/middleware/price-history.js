@@ -14,8 +14,14 @@ export const historyMiddleware = () => {
                     method: "GET",
                     body: JSON.stringify(action.payload)
                 })
-                    .then(response => response.json())
-                    .then(jsonData => store.dispatch(setHistory(jsonData)));
+                    .then(response => {
+                        if (response.status === 200) {
+                            response.json()
+                        } else {
+                            throw new Error("Приостановлен несанкционированный доступ")
+                        }
+                    })
+                    .then(jsonData => store.dispatch(setHistory(jsonData))).catch((error) => alert(error.message));
                 break;
         }
 

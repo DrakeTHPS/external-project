@@ -20,11 +20,17 @@ export const usersMiddleware = () => {
                     method: "GET",
                     body: JSON.stringify(action.payload)
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 200) {
+                            response.json()
+                        } else {
+                            throw new Error("Приостановлен несанкционированный доступ")
+                        }
+                    })
                     .then(jsonData => {
                         let users = jsonData.map(user => {return {...user, role:user.roleUser.role}})
                         store.dispatch(setUsers(users))
-                    });
+                    }).catch((error) => alert(error.message));
                 break;
             case ADD_USER_ACTION:
                 fetch("/api/user/", {
@@ -39,14 +45,14 @@ export const usersMiddleware = () => {
                         if (response.status === 201) {
                             return response.json();
                         } else {
-                            alert("Не удалось добавить")
+                            throw new Error("Не удалось добавить")
                         }
                     }
                 ).then(jsonData => {
                     let users = store.getState().users.users.slice();
                     users.push(jsonData);
                     store.dispatch(setUsers(users));
-                })
+                }).catch((error) => alert(error.message))
                 break;
             case CHANGE_USER_ACTION:
                 fetch("/api/user/" + action.payload.id, {
