@@ -18,10 +18,20 @@
 }
 
 .submit_button {
-    width: 40%;
+    width: 45%;
     height: 40px;
     margin-left: auto;
     border: none;
-    background-color: green;
-    color: white;
+    background-color: orange;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+a{
+    color: black;
+}
+
+a:hover{
+    text-decoration: none;
+    color: black;
 }

@@ -12,7 +12,7 @@ const FrontPage = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h4>СУДИЗ</h4>
+                <h4 className={styles.title}>СУДИЗ</h4>
                 <div className={styles.navigation}>
                     <button className={styles.navButton} onClick={() => history.push("/main/registry")}>Реестр закупок
                     </button>

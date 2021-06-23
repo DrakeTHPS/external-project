@@ -29,7 +29,6 @@ const AuthScreen = (props) => {
             })
             .then(jsonData => {
                 localStorage.setItem("jwt", JSON.stringify(jsonData));
-                props.setRole(jsonData.roles[0]);
                 history.push("/main/registry");
             }).catch((error) => alert(error.message))
     }
@@ -40,7 +39,7 @@ const AuthScreen = (props) => {
             <div className={styles.fill}/>
             <div className={styles.authorization}>
                 <div className={styles.authorizationBlock}>
-                    <h1>Войти</h1>
+                    <h1 className={styles.title}>СУДИЗ</h1>
                     <input placeholder="Логин" onChange={(e) => setLogin(e.target.value)}/>
                     <input placeholder="Пароль" type={'password'} onChange={(e) => setPassword(e.target.value)}/>
                     <button className={"submit_button"} onClick={() => tryToRegister()}>Войти</button>
@@ -51,14 +50,4 @@ const AuthScreen = (props) => {
     )
 }
 
-const mapStateToProps = state => ({
-    role: state.auth.role
-})
-
-const mapDispatchToProps = dispatch => {
-    return {
-        setRole: (role) => dispatch(setRole(role))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);
+export default AuthScreen;

@@ -29,7 +29,7 @@ const Registry = (props) => {
     }, []);
 
     return (
-        <div className="card" style={{margin: "1%"}}>
+        <div className="card" style={{margin: "1% 10%"}}>
             <Grid
                 rows={props.supplies}
                 columns={columns}
