@@ -22,7 +22,7 @@ export const suppliesMiddleware = () => {
                 })
                     .then(response => {
                         if (response.status === 200) {
-                            response.json()
+                            return response.json()
                         } else {
                             throw new Error("Приостановлен несанкционированный доступ")
                         }
@@ -41,7 +41,7 @@ export const suppliesMiddleware = () => {
                 })
                     .then(response => {
                         if (response.status === 200) {
-                            response.json()
+                            return response.json()
                         } else {
                             throw new Error("Приостановлен несанкционированный доступ")
                         }

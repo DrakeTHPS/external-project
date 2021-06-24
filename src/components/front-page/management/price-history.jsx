@@ -13,10 +13,11 @@ import {
 import '@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css';
 import {connect} from "react-redux";
 import {getHistory} from "../../../store/actions/price-history";
+import {getPriceHistory} from "../../../store/selectors/price-history";
 
 const PriceHistory = (props) => {
     const [columns] = useState([
-        {name: 'detail', title: 'Артикул'},
+        {name: 'vendorCode', title: 'Артикул'},
         {name: 'dealer', title: "Поставщик"},
         {name: 'date', title: 'Дата'},
         {name: 'oldPrice', title: 'Старая цена'},
@@ -47,7 +48,7 @@ const PriceHistory = (props) => {
 
 
 const mapStateToProps = state => ({
-    history: state.history.priceHistory,
+    history: getPriceHistory(state),
 })
 
 const mapDispatchToProps = dispatch => {

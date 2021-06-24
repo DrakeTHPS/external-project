@@ -22,7 +22,7 @@ export const catalogMiddleware = () => {
                 })
                     .then(response => {
                         if (response.status === 200) {
-                            response.json()
+                            return response.json()
                         } else {
                             throw new Error("Приостановлен несанкционированный доступ")
                         }
@@ -58,7 +58,7 @@ export const catalogMiddleware = () => {
                         'Accept': 'application/json',
                         ...auth()
                     },
-                    method: "PUT",
+                    method: "PATCH",
                     body: JSON.stringify(action.payload)
                 }).then(response => {
                         if (response.status === 200) {

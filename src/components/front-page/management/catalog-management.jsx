@@ -62,6 +62,7 @@ const CatalogManagement = (props) => {
                     } else {
                         editedRawRow.currentPrice = row.currentPrice;
                     }
+                    editedRawRow.id = row.id;
                     props.editCatalog(editedRawRow);
                 }
             })
